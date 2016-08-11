@@ -4,8 +4,12 @@ import { Link } from 'react-router';
 export default React.createClass({
   render: function () {
     return (
-    	<header className="app-header">app header
-    	<Link to="/login">Log in</Link>
+    	<header className="app-header">
+    	<Link to="/"><h1>Re&#923;ction</h1></Link>
+    	<section className="account-ctrl">
+    	  <Link to="/users/create">Join</Link>
+    	  <Link to="/login">Log in</Link>
+    	</section>  
     	</header>
     );
   }
