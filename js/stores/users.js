@@ -5,7 +5,7 @@ import Config   from 'appRoot/appConfig';
 
 import SessionContext  from 'appRoot/stores/SessionContext';
 
-export default Reflux.crateStore({
+export default Reflux.createStore({
 	listenables: Actions,
 	users: [],
 	endpoint: Config.apiRoot + '/users',

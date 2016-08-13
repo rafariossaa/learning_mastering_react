@@ -5,7 +5,7 @@ import Reflux from 'reflux';
 // Los asincronos proveen una interfaz con una promesa si se usa reflux-promise
 
 // Cada accion es un objeto funcion (functor) que puede ser llamado para disparar los listeners
-export default Reflux.crateActions({
+export default Reflux.createActions({
   'getPost' : {
   	aysncResult : true
   },
