@@ -3,7 +3,7 @@ import Actions  from 'appRoot/actions';
 import Request  from 'superagent';
 import Config   from 'appRoot/appConfig';
 
-import SessionContext  from 'appRoot/stores/SessionContext';
+import SessionContext  from 'appRoot/stores/sessionContext';
 
 export default Reflux.createStore({
 	listenables: Actions,
@@ -28,7 +28,7 @@ export default Reflux.createStore({
 	modifyUser: function (method, details, action) {
 		Request[method](this.endpoint)
 		  .send(details)
-		  .end(functio n (err, res) {
+		  .end(function (err, res) {
 		  	if (res.ok) {
 		  		Actions
 		  		   .login(res.body.username, res.password)
@@ -45,7 +45,7 @@ export default Reflux.createStore({
 		this.modifyUser('post', details, Actions.createUser);
 	},
 	onEditUser: function(details) {
-		this.modifyUser('put', details, Actions.editUser;
+		this.modifyUser('put', details, Actions.editUser);
 	}
 });
 

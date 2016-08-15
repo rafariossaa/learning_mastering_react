@@ -4,8 +4,8 @@ import Request  from 'superagent';
 import Config   from 'appRoot/appConfig';
 import Cookie   from 'appRoot/vendor/cookie';
 
-export defualt Reflux.createStore({
-  listenabels: Actions,
+export default Reflux.createStore({
+  listenables: Actions,
   endpoint: Config.apiRoot + '/users',
   context: { loggedIn: false},
   
@@ -39,7 +39,7 @@ export defualt Reflux.createStore({
 
   onLogin: function (name, pass) {
   	Request
-  	  .get(this.endpoint
+  	  .get(this.endpoint)
   	  .query({
   	  	'username': name,
   	  	'password': pass

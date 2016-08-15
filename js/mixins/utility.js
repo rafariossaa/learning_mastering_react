@@ -6,7 +6,7 @@ import ReactDOM  from 'react-dom';
  * validators return true if valid, false otherwise
  */
 export function validate (val, constraints) {
-	var error= [];
+	var errors = [];
 	var validators = {
 		minlength: {
 			fn: function (val, cVal) {
@@ -72,10 +72,10 @@ export var formMixins = {
 
   	return this.refs[ref] ?
   	   ReactDOM.findDOMNode(this.refs[ref]).querySelector('input') :
-  	   ReactDOM.findDOMNode(this).queySelector('[name='+ref+'] input');
+  	   ReactDOM.findDOMNode(this).querySelector('[name='+ref+'] input');
   },
   validateField: function (fieldName, constraintOverride) {
-  	let fieldVal = this.getInputEle(fieldNanme).value,
+  	let fieldVal = this.getInputEle(fieldName).value,
   	    currentConstraint,
   	    errors;
 

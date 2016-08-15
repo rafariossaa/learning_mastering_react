@@ -15,7 +15,8 @@ export default Reflux.createActions({
   'login' : {
   	aysncResult : true
   },
-  'logOut' : {
+  'logOut' : {},
+  'createUser' : {
   	aysncResult : true
   },
   'editUser' : {
