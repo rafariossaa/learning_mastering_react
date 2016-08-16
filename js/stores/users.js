@@ -1,3 +1,5 @@
+"use strict";
+
 import Reflux   from 'reflux';
 import Actions  from 'appRoot/actions';
 import Request  from 'superagent';

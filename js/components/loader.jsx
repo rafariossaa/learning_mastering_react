@@ -1,4 +1,6 @@
-import React   from 'react';
+"use strict";
+
+import React      from 'react';
 import ClassNames from 'classnames';
 
 export default React.createClass({
@@ -22,3 +24,4 @@ export default React.createClass({
 		);
 	}
 });
+

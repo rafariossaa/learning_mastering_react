@@ -1,3 +1,5 @@
+"use strict";
+
 import Reflux   from 'reflux';
 import Actions  from 'appRoot/actions';
 import Request  from 'superagent';
@@ -10,7 +12,7 @@ export default Reflux.createStore({
   context: { loggedIn: false},
   
   getInitialState: function () {
-  	this.context  = JSON.parse(Cooie.getItem('session')) || {} ;
+  	this.context  = JSON.parse(Cookie.getItem('session')) || {} ;
   	this.context.loggedIn = this.context.loggedIn || false;
 
   	return this.context;
@@ -18,15 +20,15 @@ export default Reflux.createStore({
   
   getResponseResolver: function (action) {
   	return function (err, res) {
-  		if (res.k && res.body instanceof Array && res.body.length > 0) {
+  		if (res.ok && res.body instanceof Array && res.body.length > 0) {
   			this.context   = res.body[0];
   			this.context.loggedIn = true;
   			this.context.profileImageData = null;
 
-  			this.trigeer(this.context);
+  			this.trigger(this.context);
   			action.completed();
 
-  			Cookie.seItem('session', JSON.stringify(this.context));
+  			Cookie.setItem('session', JSON.stringify(this.context));
   		} else {
   			action.failed();
   		}

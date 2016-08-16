@@ -27,12 +27,11 @@ export default React.createClass({
   	    }.bind(this))
   	    ['catch'](function () {
   	    	this.setState({'loginError': 'bad username or password'});
-
   	    }.bind(this));
   },
   render: function () {
     return (
-    	<form className="login-form" onSubmit={this.login}>
+    	<form className="login-form" onSubmit={this.logIn}>
     	  <fieldset>
     	    <legend>Log In</legend>
     	    <BasicInput name="username" type="text" placeholder="username" />

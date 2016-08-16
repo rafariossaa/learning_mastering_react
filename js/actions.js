@@ -1,3 +1,5 @@
+"use strict";
+
 import Reflux from 'reflux';
 
 
@@ -7,20 +9,20 @@ import Reflux from 'reflux';
 // Cada accion es un objeto funcion (functor) que puede ser llamado para disparar los listeners
 export default Reflux.createActions({
   'getPost' : {
-  	aysncResult : true
+  	asyncResult : true
   },
   'modifyPost' : {
-  	aysncResult : true
+  	asyncResult : true
   },
   'login' : {
-  	aysncResult : true
+  	asyncResult : true
   },
   'logOut' : {},
   'createUser' : {
-  	aysncResult : true
+  	asyncResult : true
   },
   'editUser' : {
-  	aysncResult : true
+  	asyncResult : true
   },
   'search' : {},
   'getSessionContext': {}

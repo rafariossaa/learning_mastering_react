@@ -1,7 +1,9 @@
+"use strict";
+
 import ReactDOM  from 'react-dom';
 
 /**
- * returns the failed contraints { errors: [] } of true if valid
+ * returns the failed constraints { errors: [] } or true if valid
  * constraints are a map of supported constraint names and values
  * validators return true if valid, false otherwise
  */
@@ -21,7 +23,7 @@ export function validate (val, constraints) {
 			fn: function (val) {
 				return typeof val === 'string' ? !/^\s*$/.test(val) : val !== undefined && val !== null;
 			},
-			msg: function (val) {
+			msg: function () {
 				return 'required field';
 			}
 		},
@@ -29,7 +31,7 @@ export function validate (val, constraints) {
 		exclusive: {
 			fn: function (val, list) {
 				if (!(list instanceof Array)) { return false; }
-				return list.filter(function (V) { return v === val;}) < 1;
+				return list.filter(function (v) { return v === val;}) < 1;
 			},
 			msg: function (val) {
 				return val + 'is already taken';

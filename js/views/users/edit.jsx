@@ -1,3 +1,5 @@
+"use strict";
+
 import React from 'react';
 import { History } from 'react-router';
 import Reflux      from 'reflux';
@@ -27,7 +29,7 @@ export default React.createClass({
     },
     'password': {
         required: true,
-        minlength: 6
+        minlength: 5
     },
     'blogName': {
         required: true,
@@ -58,14 +60,11 @@ export default React.createClass({
                                     }))       :
                  this.validateField(fieldName);
 
-
             !hasErrors && errors.length && v.focus(); //fist encountered error
 
             hasErrors = hasErrors || errors.length;
 
             validationState[fieldName] = { $set: errors.length ? errors[0].msg : null };
-
-            console.log("chequeo: " + validationState);
         }.bind(this));
 
     if (this.state.profileImageData) {
@@ -77,8 +76,7 @@ export default React.createClass({
     if (!hasErrors) {
         Actions.createUser(detail)
             .then(function (result) {
-                // got to newly created entry
-                console.log("push");
+                // go to newly created entry
                 this.history.pushState('', `/users/${result.id}`);
             }.bind(this));
     }
@@ -91,12 +89,12 @@ export default React.createClass({
     if(this.state.sizeExceeded /* || bad image */) {
         this.setPlaceholderImage();
     } else {
-        this.setState({profileImageDate: e.target.result});
+        this.setState({profileImageData: e.target.result});
     }
   },
 
   userImageUpload: function (e) {
-    var file= e.target.file[0],
+    var file= e.target.files[0],
         reader = new FileReader();
 
     reader.onload = this.imageLoadedHandler;
@@ -108,16 +106,6 @@ export default React.createClass({
     fileVal = fileVal ? fileVal.value : '';
 
     if (!typeof fileVal === 'string' || /^\s*$/.test(fileVal)) {
-/*
-this.setState({ 'profileImageData': 'data:image/svg+xml;' });
-
-        <?xml version="1.0"?>
-        <svg height="100" width="100" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
-          Sorry, your browser does not support inline SVG.
-        </svg>
-
-*/
 this.setState({ 'profileImageData': 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+Cjxzdmcgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogPCEtLSBDcmVhdGVkIHdpdGggTWV0aG9kIERyYXcgLSBodHRwOi8vZ2l0aHViLmNvbS9kdW9waXhlbC9NZXRob2QtRHJhdy8gLS0+CiA8Zz4KICA8dGl0bGU+YmFja2dyb3VuZDwvdGl0bGU+CiAgPHJlY3QgZmlsbD0iIzAwZmZmZiIgaWQ9ImNhbnZhc19iYWNrZ3JvdW5kIiBoZWlnaHQ9IjgyIiB3aWR0aD0iODIiIHk9Ii0xIiB4PSItMSIvPgogIDxnIGRpc3BsYXk9Im5vbmUiIG92ZXJmbG93PSJ2aXNpYmxlIiB5PSIwIiB4PSIwIiBoZWlnaHQ9IjEwMCUiIHdpZHRoPSIxMDAlIiBpZD0iY2FudmFzR3JpZCI+CiAgIDxyZWN0IGZpbGw9InVybCgjZ3JpZHBhdHRlcm4pIiBzdHJva2Utd2lkdGg9IjAiIHk9IjAiIHg9IjAiIGhlaWdodD0iMTAwJSIgd2lkdGg9IjEwMCUiLz4KICA8L2c+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPGVsbGlwc2Ugcnk9IjE1IiByeD0iMTUiIGlkPSJzdmdfMSIgY3k9IjMyLjUiIGN4PSI0MCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2U9IiMwMDAiIGZpbGw9IiNmZmYiLz4KICA8ZWxsaXBzZSBzdHJva2U9IiMwMDAiIHJ5PSI2MS41IiByeD0iMzguNDk5OTk4IiBpZD0ic3ZnXzIiIGN5PSIxMTIiIGN4PSIzOS41IiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9IiNmZmYiLz4KIDwvZz4KPC9zdmc+' });
 
     }
@@ -130,18 +118,35 @@ this.setState({ 'profileImageData': 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvb
     // noValidate disables native validation
     // to avoid react collisions with native state
     return (
-    	<form ref="form" className="user-edit" 
-              name="useredit" onSubmit={function (e) {e.preventDefault(); }} noValidate>
+    	<form ref="form" 
+            className="user-edit" 
+            name="useredit" 
+            onSubmit={function (e) {e.preventDefault(); }}
+            noValidate>
         <fieldset>
           <legend>become an author</legend>
 
-          <BasicInput type="text" name="blogName" 
-               placeholder="blog name" error={this.state.validity.blogName} autoFocus />
+          <BasicInput 
+             type="text"
+             name="blogName" 
+             placeholder="blog name" 
+             error={this.state.validity.blogName} 
+             autoFocus />
           <hr/>
-          <BasicInput type="text" name="username" 
-               placeholder="username" minLength="3" error={this.state.validity.username} />
-          <BasicInput type="password" name="password" 
-               placeholder="password" minLength="6" error={this.state.validity.password} required />
+          <BasicInput
+             type="text" 
+             name="username" 
+             placeholder="username" 
+             minLength="3" 
+             error={this.state.validity.username} 
+             />
+          <BasicInput
+             type="password" 
+             name="password" 
+             placeholder="password"
+             minLength="6" 
+             error={this.state.validity.password} 
+             required />
           <br/>
 
           <div className="profile-image-container">
@@ -158,7 +163,7 @@ this.setState({ 'profileImageData': 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvb
         <BasicInput type="text" name="lastName" placeholder="last name" />
         <BasicInput type="email" name="email"  placeholder="email" />
 
-        <button type="submit" onClick={this.createUser}>I'm ready to write</button>
+        <button type="submit" onClick={this.createUser}>Im ready to write</button>
         </fieldset>
         </form>
     );

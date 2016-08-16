@@ -1,4 +1,4 @@
-
+"use strict";
 
 import React     from 'react';
 import ReactDom  from 'react-dom';
@@ -43,7 +43,7 @@ let routes = (
         component= { PostEdit }
       />
       <Route
-        path="/posts/:postId/create"
+        path="/posts/:postId/edit"
         component= { PostEdit }
       />
       <Route
@@ -52,7 +52,7 @@ let routes = (
       />
 
       <Route 
-        path="/users/"
+        path="/users"
         component= { UserList }
       />
       <Route
