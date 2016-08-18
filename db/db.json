@@ -1,5 +1,22 @@
 {
-  "posts": [],
+  "posts": [
+    {
+      "title": "post numero 1",
+      "body": "<div>Esto es una prueba de un <b>post</b></div>",
+      "user": 1,
+      "date": 1471540003250,
+      "summary": "Esto es una prueba de un post\n",
+      "id": 1
+    },
+    {
+      "title": "post numero 2",
+      "body": "<div>asdfasdf</div><div>a a</div><div>wer </div><div>sdheru</div><div><br></div>",
+      "user": 1,
+      "date": 1471543359876,
+      "summary": "asdfasdf\na a\nwer \nsdheru\n\n",
+      "id": 2
+    }
+  ],
   "users": [
     {
       "blogName": "qwerty",

@@ -2,6 +2,7 @@
 
 import React   from 'react';
 import UserView   from 'appRoot/components/users/view';
+import PostView   from 'appRoot/components/posts/list';
 
 
 export default React.createClass({
@@ -9,6 +10,8 @@ export default React.createClass({
     return (
   		<div className="user-view">
         <UserView userId={this.props.params.userId} />
+        <hr />
+        <PostList user={this.props.params.userId} />
   	  </div>
     );
   }

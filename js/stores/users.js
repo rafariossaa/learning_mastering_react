@@ -18,7 +18,11 @@ export default Reflux.createStore({
 		   	 if(res.ok) {
 		   	  this.users = res.body;
 		   	  this.trigger(this.users);
+
+		   	  var str = JSON.stringify(this.users, null, 4);
+		   	  console.log("usuarios obtenidos" + str);
 		   	 } else {
+		   	 	console.log("stores-users.js: error al obtener usuarios");
 		   	 }
 		   }.bind(this));
 	},

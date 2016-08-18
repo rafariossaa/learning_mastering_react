@@ -69,7 +69,7 @@ export default Reflux.createStore({
     		  	} else {
     		  		Actions.modifyPost.completed();
     		  	}
-    		  }.bind(this)):
+    		  }.bind(this));
     	}
 
     	Config.loadTimeSimMs ? setTimeout(req.bind(this), Config.loadTimeSimMs) : req();
