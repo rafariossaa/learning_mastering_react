@@ -4,6 +4,7 @@ import React     from 'react';
 import ReactDOM  from 'react-dom';
 import Config    from 'appRoot/appConfig';
 import PostStore from 'appRoot/stores/posts';
+import SearchStore from 'appRoot/stores/search';
 import PostView  from 'appRoot/views/posts/view';
 import Loader    from 'appRoot/components/loader';
 
@@ -15,6 +16,7 @@ export default React.createClass({
     };
   },
   componentWillMount: function () {
+    this.searchUnsubscribe = SearchStore.listen(this.onSearch);
     this.getNextPage();
   },
   componentDidMount: function () {
@@ -38,8 +40,18 @@ export default React.createClass({
     this.scrollParent.addEventListener('scroll', this.onScroll);
   },
   componentWillUnmount: function () {
+    this.searchUnsubscribe();
     this.scrollParent
        .removeEventListener('scroll', this.onScroll);
+  },
+  onSearch: function (search) {
+    this.setState({
+      page: 1,
+      posts:  [],
+      search: search
+    });
+
+    this.getNextPage();
   },
   onScroll: function (e) {
     var scrollEle = this.scrollParent,
@@ -59,7 +71,7 @@ export default React.createClass({
 
     PostStore.getPostsByPage (
       this.state.page,
-      this.props
+      Object.assign({}, this.state.search ? {q: this.state.search} : {}, this.props)
     ).then (function (results) {
       var data = results.results;
 

@@ -1,7 +1,9 @@
-import Reflux from 'reflux';
+"use strict";
+
+import Reflux  from 'reflux';
 import Actions from 'appRoot/actions';
 import Request from 'superagent';
-import Config from 'appRoot/appConfig';
+import Config  from 'appRoot/appConfig';
 
 export default Reflux.createStore({
 	listenables: Actions,
@@ -21,7 +23,7 @@ export default Reflux.createStore({
 
       if (typeof params === 'object') {
         // ES6 extend object
-        Object.assign(query, params)
+        Object.assign(query, params);
       }
 
       if (this.currentRequest) {
@@ -49,6 +51,16 @@ export default Reflux.createStore({
                 });
             }
             if (res.ok) {
+                // if using q param (search),
+                // filter by other params,
+                // cause JSON server doesn't
+                // This is a problem with json-server
+                // realistically we'd fix this on our real server
+                if (params.q) {
+                    results = results.filter(function (post) {
+                        return params.user ? post.user == params.user : true;
+                    });
+                }
                 Config.loadTimeSimMs ? setTimeout(complete, Config.loadTimeSimMs) : complete();
             } else {
                 reject(Error(err));
@@ -91,18 +103,6 @@ export default Reflux.createStore({
     		  .end( function (err, res) {
     		  	if (res.ok) {
     		  		Actions.modifyPost.completed(res);
-
-    		  		// if there's already a post in our local store we need to modify it
-    		  		// if not, add this one
-    		  		var existingPostIdx = Array.findIndex(this.posts, function (post) { 
-    		  			        return res.body.id == post.id
-    		  			    });
-
-    		  		if (existingPostIdx > -1) {
-    		  			this.posts[existingPostIdx] = res.body;
-    		  		} else {
-    		  			this.posts.push(res.body);
-    		  		}
     		  	} else {
     		  		Actions.modifyPost.completed();
     		  	}
