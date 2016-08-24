@@ -26,12 +26,12 @@ export default React.createClass({
         <Link to="/"><h1>Re&#923;ction</h1></Link>
 
     	<section className="account-ctrl">
-        <input
-           ref="search"
-           type="search"
-           placeholder="search"
-           defaultValue={this.state.initialQuery}
-           onChange={this.search} />
+          <input
+             ref="search"
+             type="search"
+             placeholder="search"
+             defaultValue={this.state.initialQuery}
+             onChange={this.search} />
           {
           	this.state.session.loggedIn ? 
           	  (<Link to="/posts/create">

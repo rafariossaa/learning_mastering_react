@@ -26,8 +26,6 @@ export default React.createClass({
   },
 
   componentWillMount: function () {
-      let str = JSON.stringify(this.state.post, null, 4);
-
       if (this.state.post) {
       } else {
       	// get post from query params
@@ -36,8 +34,6 @@ export default React.createClass({
   },
 
   getUserFromPost: function (post) {
-    let str = JSON.stringify(this.state, null, 4);
-
   	return Array.find(this.state.users, function (user) {
   		return user.id === post.user;
   	});
@@ -50,12 +46,9 @@ export default React.createClass({
   		this.state.loading = true;
   	}
 
-    let str = JSON.stringify(this.props.params, null, 4);
-
   	Actions.getPost(this.props.params.postId)
   	  .then(function (data) {
   	  	// this.state.posts = this.state.posts.concat(data);
-
   	  	this.setState({
   	  		loading: false,
   	  		post: data

@@ -1,11 +1,13 @@
-"use stric";
-import Reflux from 'reflux';
-import Actions from 'appRoot/actions';
 
-export default Reflux.createStore({
+"use strict";
+
+import Reflux   from 'reflux';
+import Actions  from 'appRoot/actions';
+
+export default Reflux.createStore ({
 	listenables: Actions,
 
-	// called when mixin is used to init the component state
+	//called when mixin is used to init the component state
 	getInitialState: function () {
 		return this.query;
 	},
@@ -14,3 +16,4 @@ export default Reflux.createStore({
 		this.trigger(search);
 	}
 });
+

@@ -1,19 +1,18 @@
 "use strict";
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Config from 'appRoot/appConfig';
+import React     from 'react';
+import ReactDOM  from 'react-dom';
+import Config    from 'appRoot/appConfig';
 import PostStore from 'appRoot/stores/posts';
 import SearchStore from 'appRoot/stores/search';
 import PostView  from 'appRoot/views/posts/view';
 import Loader    from 'appRoot/components/loader';
 
-
 export default React.createClass({
   getInitialState: function () {
     return {
       page: 1,
-      posts: []    
+      posts: []
     };
   },
   componentWillMount: function () {
@@ -27,27 +26,31 @@ export default React.createClass({
     while (ele) {
       style = window.getComputedStyle(ele);
 
-      if (style.overflow.length || 
-          style.overflowY.length || 
-          /body/i.test(ele.nodeName)) {
+      if (style.overflow.length ||
+          style.overflowY.length ||
+          /body/i.test(ele.nodeName)
+      ) {
         this.scrollParent = ele;
         break;
       } else {
         ele = ele.parentNode;
       }
     }
+
     this.scrollParent.addEventListener('scroll', this.onScroll);
   },
   componentWillUnmount: function () {
     this.searchUnsubscribe();
-    this.scrollParent.removeEventListener('scroll', this.onScroll);
+    this.scrollParent
+       .removeEventListener('scroll', this.onScroll);
   },
   onSearch: function (search) {
     this.setState({
       page: 1,
-      posts: [],
+      posts:  [],
       search: search
     });
+
     this.getNextPage();
   },
   onScroll: function (e) {
@@ -56,37 +59,38 @@ export default React.createClass({
 
     if (!this.state.loading &&
         !this.state.hitmax &&
-        scrollDiff < 100 ) {
+        scrollDiff < 100
+    )  {
       this.getNextPage();
     }
   },
   getNextPage: function () {
-    this.setState( {
+    this.setState({
       loading: true
     });
 
-    PostStore.getPostsByPage(
-           this.state.page, 
-           Object.assign({}, this.state.search ? { q: this.state.search} : {}, this.props)
-        ).then(function (results) {
-           var data = results.results;
+    PostStore.getPostsByPage (
+      this.state.page,
+      Object.assign({}, this.state.search ? {q: this.state.search} : {}, this.props)
+    ).then (function (results) {
+      var data = results.results;
 
-           // Make sure we put the data in the correct
-           // location in the array.
-           // If many resuls are resolved at once
-           // trust the request data for estart and end
-           // instead of some internal state
-           Array.prototype.splice.apply(this.state.posts, [results.start, results.end].concat(data));
+      // Make sure we put the data in the correct
+      // location in the array.
+      // If many results are resolved at once
+      // trust the request data for start and end
+      // instead of some internal state
+      Array.prototype.splice.apply(this.state.posts, [results.start, results.end].concat(data));
 
-           // user may navigate away -
-           // changing state would cause a warning
-           // So, Check if we're mounted when this promise resolves
-           this.isMounted() && this.setState({
-             loading: false,
-             hitmax: data.length === 0 || data.length < Config.pageSize,
-             page: this.state.page+1
-           });
-        }.bind(this), function (err) {});
+      // user may navigate away -
+      // changing state would cause a warning
+      // So, check if we're mounted when this promise resolves
+      this.isMounted() && this.setState({
+        loading: false,
+        hitmax: data.length === 0 || data.length < Config.pageSize,
+        page: this.state.page+1
+      });
+    }.bind(this), function (err) {});
   },
   render: function () {
     var postsUI = this.state.posts.map(function (post) {
@@ -98,14 +102,14 @@ export default React.createClass({
     	<ul>
     	  {postsUI}	
     	</ul>
-      { this.state.hitmax && !this.state.loading ?
-         (
+      { this.state.hitmax && !this.state.loading ? 
+        (
           <div className="total-posts-msg">
             showing { this.state.posts.length} posts
           </div>
-          ) : ''
+        ) : ''
       }
-      { this.state.loading ? <Loader inline={true} /> : ''}
+      {this.state.loading ? <Loader inline={true} /> : ''}
     	</div>
     );
   }
