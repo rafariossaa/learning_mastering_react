@@ -58,7 +58,8 @@ module.exports = {
       	test: /\.jsx?$/,
       	include: [
       	  // files to apply this loader to
-      	  path.join(__dirname, 'js')
+      	  path.join(__dirname, 'js'),
+          path.join(__dirname, 'node_modules/reflux-core')
       	],
       	// loader process from right to left
       	loaders: [

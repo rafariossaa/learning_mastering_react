@@ -20,15 +20,12 @@ export default React.createClass({
   ],
 
   getInitialState: function () {
-      console.log("initial state");
       return {
           post:   this.props.post
       };
   },
 
   componentWillMount: function () {
-      let str = JSON.stringify(this.state.post, null, 4);
-      console.log("will mount : "+str);
       if (this.state.post) {
       } else {
       	// get post from query params
@@ -37,10 +34,6 @@ export default React.createClass({
   },
 
   getUserFromPost: function (post) {
-    let str = JSON.stringify(this.state, null, 4);
-
-    console.log("getUserFromPost " + str);
-
   	return Array.find(this.state.users, function (user) {
   		return user.id === post.user;
   	});
@@ -52,14 +45,10 @@ export default React.createClass({
   	} else {
   		this.state.loading = true;
   	}
-    console.log("get post");
-    let str = JSON.stringify(this.props.params, null, 4);
-    console.log("params: " + str);
 
   	Actions.getPost(this.props.params.postId)
   	  .then(function (data) {
   	  	// this.state.posts = this.state.posts.concat(data);
-        console.log("en getPost :" + data);
   	  	this.setState({
   	  		loading: false,
   	  		post: data
@@ -73,16 +62,9 @@ export default React.createClass({
 
   	var user = this.getUserFromPost(post);
 
-
-  	console.log("postview render: " +user);
-
-/*
   	var name = user.firstName && user.lastName ?
   	           user.firstName + ' ' + user.lastName :
   	           user.firstName ? user.firstName : user.userName;
-*/
-    var name="perico";
-        user.profileImageData="kkk";
 
     return this.props.mode === 'summary' ? 
       (  // SUMMARY / LIST VIEW

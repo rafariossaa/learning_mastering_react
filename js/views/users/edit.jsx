@@ -143,8 +143,8 @@ this.setState({ 'profileImageData': 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvb
           <BasicInput
              type="password" 
              name="password" 
-             placeholder="password"
              minLength="6" 
+             placeholder="password"
              error={this.state.validity.password} 
              required />
           <br/>
@@ -163,7 +163,7 @@ this.setState({ 'profileImageData': 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvb
         <BasicInput type="text" name="lastName" placeholder="last name" />
         <BasicInput type="email" name="email"  placeholder="email" />
 
-        <button type="submit" onClick={this.createUser}>Im ready to write</button>
+        <button type="submit" onClick={this.createUser}>I'm ready to write</button>
         </fieldset>
         </form>
     );
