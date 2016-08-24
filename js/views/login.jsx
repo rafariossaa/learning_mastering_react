@@ -1,3 +1,5 @@
+"use strict";
+
 import React from 'react';
 import { History } from 'react-router';
 import BasicInput  from 'appRoot/components/basicInput';

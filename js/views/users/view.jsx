@@ -2,7 +2,7 @@
 
 import React   from 'react';
 import UserView   from 'appRoot/components/users/view';
-import PostView   from 'appRoot/components/posts/list';
+import PostList   from 'appRoot/components/posts/list';
 
 
 export default React.createClass({

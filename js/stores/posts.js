@@ -6,23 +6,72 @@ import Config from 'appRoot/appConfig';
 export default Reflux.createStore({
 	listenables: Actions,
 	endpoint: Config.apiRoot + '/posts',
-	posts: [],
-	// called whn mixin is used to init the component state
-	getInitialState: function () {
-	    return this.posts;
-	},
-    init: function () {
-    	Request
-    	  .get(this.endpoint)
-    	  .end(function ( err, res) {
-    	  	if (res.ok) {
-    	  		this.posts = res.body;
-    	  		this.trigger(this.posts);
-    	  	} else {
+	
+    getPostsByPage: function (page = 1, params) {
+       var start = Config.pageSize * (page-1),
+           end   = start + Config.pageSize,
+           query = {
+           	 // newest to oldest
+           	 '_sort': 'date',
+           	 '_order': 'DESC',
+           	 '_start': Config.pageSize * (page-1),
+           	 '_end':   Config.pageSize * (page-1) + Config.pageSize
+           },
+           us = this;
 
-    	  	}
-    	  }.bind(this));
+       if (typeof params ==='object') {
+       	  // ES6 extended object
+       	  Object.assign(query, params);
+       }
+
+       if (this.currentRequest) {
+       	  this.currentRequest.abort();
+       	  this.currentRequest = null;
+       }
+
+
+       return new Promise(function (resolve, reject) {
+       	 us.currentRequest = Request.get(us.endpoint);
+       	 us.currentRequest
+       	   .query(query)
+       	   .end(function (err, res) {
+       	   	 var results = res.body;
+
+       	   	 function complete () {
+       	   	 	// unfortunately if multiple request had been made
+       	   	 	// They wold all get resolved on the first
+       	   	 	// invocation of this function
+       	   	 	// Undesireable, when we are rapid firing searches
+       	   	 	// Actions.getPostsByPage.completed( { start: query._start, end:query._end, results: results});
+       	   	 	resolve({
+       	   	 		start: query._start,
+       	   	 		end: query._end,
+       	   	 		results: results
+       	   	 	});
+       	   	 }
+
+       	   	 if (res.ok) {
+       	   	 	// if using q param (search),
+       	   	 	// filter by other params,
+       	   	 	// cause JSON server doesn't
+       	   	 	// Thgis is a problem with json-server
+       	   	 	// realistically we'd fix this on our real server
+       	   	 	if (params.q) {
+       	   	 		results = results.filter(function (posts) {
+       	   	 			return params.user ? post.user == params.user : true;
+       	   	 		});
+       	   	 	}
+       	   	 	Config.ladTimeSimMs ? setTimeout(complete, Config.loadTimeSimMs) : complete();
+       	   	 } else {
+       	   	 	reject (Error(err));
+       	   	 	// same outcome as above
+       	   	 	// Actions.getPostsByPAge.failed(err);
+       	   	 }
+       	   	 this.currentRequest = null;
+       	   	}.bind(us));
+       	   });
     },
+
     //-- ACTION HANDLERS
     onGetPost: function (id) {
     	function req () {
@@ -32,6 +81,7 @@ export default Reflux.createStore({
     		  	id: id
     		  })
     		  .end(function (err, res) {
+    		  	// Here we no longer insert into the local post member
     		  	if (res.ok) {
     		  		if (res.body.length > 0) {
     		  			Actions.getPost.completed(res.body[0]);
@@ -69,7 +119,7 @@ export default Reflux.createStore({
     		  	} else {
     		  		Actions.modifyPost.completed();
     		  	}
-    		  }.bind(this));
+    		  });
     	}
 
     	Config.loadTimeSimMs ? setTimeout(req.bind(this), Config.loadTimeSimMs) : req();

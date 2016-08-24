@@ -47,7 +47,7 @@ let routes = (
         component= { PostEdit }
       />
       <Route
-        path="/posts/:postId"
+        path="posts/:postId"
         component= { PostView }
       />
 
